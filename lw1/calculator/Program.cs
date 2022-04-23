@@ -1,11 +1,13 @@
-﻿using System;
-
-
-namespace Calculator
+﻿namespace Calculator
 {
-    class Program
+    class Calculator
     {
-        static void SelectNumber(ref string? inputString, ref string? count, ref int index)
+        public static void WriteHeader()
+        {
+            Console.WriteLine("The calculator supports addition(+), substraction(-), multiplication(*) and division(/) operations");
+            Console.WriteLine("Separate real numbers with a comma");
+        }
+        public static void SelectNumber(ref string? inputString, ref string? count, ref int index)
         {
             if (inputString[index] == '-')
             {
@@ -22,8 +24,7 @@ namespace Calculator
                 count += inputString[i];
             }
         }
-
-        static void ConverToFloat(ref string? countInString, ref float convertedCount)
+        public static void ConverToFloat(ref string? countInString, ref float convertedCount)
         {
             while (!float.TryParse(countInString, out convertedCount))
             {
@@ -32,8 +33,7 @@ namespace Calculator
                 countInString = Console.ReadLine();
             }
         }
-
-        static void DoOperation(ref float firstCount, ref float secondCount, ref char operation)
+        public static void DoOperation(ref float firstCount, ref float secondCount, ref char operation)
         {
             switch (operation)
             {
@@ -72,49 +72,64 @@ namespace Calculator
                     }
             }
         }
-
-        static void Main()
+        public static void WriteFooter(ref string exit)
         {
+            Console.WriteLine("Do you want exit? (Yes/No)");
+            exit = Console.ReadLine();
+            // if user entered word in the wrong format
+            exit = exit.ToLower();
+        }
+    }
+    class Controller
+    {
+        private static void ReadExpression(ref string expression)
+        {
+            while (expression == "")
+            {
+                Console.WriteLine("Enter the expression you want to calculate in format: <1-st count> <operation> <2-nd count>");
+                expression = Console.ReadLine();
+            }
+            expression = expression.Replace(" ", "");
+        }
+        public static void Start()
+        {
+            Calculator.WriteHeader();
             string exit = "no";
-            Console.WriteLine("The calculator supports addition(+), substraction(-), multiplication(*) and division(/) operations");
-            Console.WriteLine("Enter real numbers separated by commas");
             while (exit == "no")
             {
                 string? expression = "";
-                while (expression == "")
-                {
-                    Console.WriteLine("Enter the expression you want to calculate in format: <1-st count> <operatoin> <2-nd count>");
-                    expression = Console.ReadLine();
-                }
-                expression = expression.Replace(" ", "");
+                ReadExpression(ref expression);
                 string? count = "";
                 int index = 0;
 
                 // Reading the first count
-                SelectNumber(ref expression,ref count, ref index);
+                Calculator.SelectNumber(ref expression, ref count, ref index);
 
                 // convert a firstCount to float
                 float firstCount = 0;
-                ConverToFloat(ref count, ref firstCount);
+                Calculator.ConverToFloat(ref count, ref firstCount);
 
                 char operation = expression[index - 1];
 
                 // Reading the second count
                 count = "";
-                SelectNumber(ref expression, ref count, ref index);
+                Calculator.SelectNumber(ref expression, ref count, ref index);
 
                 // convert a secondCount to float
                 float secondCount = 0;
-                ConverToFloat(ref count, ref secondCount);
+                Calculator.ConverToFloat(ref count, ref secondCount);
 
-                DoOperation(ref firstCount, ref secondCount, ref operation);
+                Calculator.DoOperation(ref firstCount, ref secondCount, ref operation);
 
-                Console.WriteLine("Do you want exit? (Yes/No)");
-                exit = Console.ReadLine();
-                // if user entered word in the wrong format
-                exit = exit.ToLower();
+                Calculator.WriteFooter(ref exit);
             }
         }
     }
+    class Program
+    {
+        static void Main()
+        {
+            Controller.Start();
+        }
+    }
 }
-
