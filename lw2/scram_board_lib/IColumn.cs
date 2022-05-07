@@ -9,7 +9,8 @@ namespace scram_board_lib
     public interface IColumn
     {
         string _name { get; set; }
-        void AddTask(ITask task);
+        List<ITask> Tasks { get; }
+        void AddTask(string name, string description, int priority);
         void DeleteTask(ITask task);
         ITask GetTask(string taskName);
         List<ITask> GetAllTask();

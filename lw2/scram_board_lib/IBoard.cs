@@ -11,8 +11,8 @@ namespace scram_board_lib
         string _name { get; }
         List<IColumn> Columns { get; }
         void AddColumn(string name);
-        void AddTask(ITask task);
-        void MoveTask(IColumn columnFrom, IColumn columnTo, ITask task);
+        void AddTask(string name, string description, int priority);
+        void MoveTask(IColumn columnFrom, IColumn columnTo, string taskName);
         
     }
 }

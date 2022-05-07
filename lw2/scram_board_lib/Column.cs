@@ -14,12 +14,14 @@ namespace scram_board_lib
         public Column(string name)
         {
             _name = name;
+            _tasks = new List<ITask>();
         }
-
-        private List<ITask> _tasks;
+        private List<ITask> _tasks { get; }
+        public List<ITask> Tasks => _tasks;
         public string _name { get; set; }
-        public void AddTask(ITask task)
+        public void AddTask(string name, string description, int priority)
         {
+            ITask task = new Task(name, description, priority);
             _tasks.Add(task);
         }
         public void DeleteTask(ITask task)
